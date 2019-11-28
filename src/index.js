@@ -1,12 +1,27 @@
 
 function validateForm(evt) {
   evt.preventDefault();
-  const url = 'http://servicos.cptec.inpe.br/XML/cidade/244/previsao.xml'
-  // const city = document.getElementById("cidade").value;
-  // const state = document.getElementById("estado").value;
-  // console.log(city, state);
+  const city = document.getElementById("cidade").value.toLowerCase().replace(' ', '%20');
+  const state = document.getElementById("estado").value.toUpperCase();
+  console.log(city, state);
 
-  getFromUrl(url, function() {
+  const codigo_url = `http://servicos.cptec.inpe.br/XML/listaCidades?city=${city}`
+  getFromUrl(codigo_url, function() {
+    const response = this.responseXML.getElementsByTagName('cidades')
+    let codigo = null
+    for (const cidade of response){
+      for (const node of cidade.childNodes){
+        if (node.childNodes[1].innerHTML === state){
+          codigo = node.childNodes[2].innerHTML //PRECISO DISSO AQUI
+          break
+        }
+      }
+    }
+    console.log(codigo)
+  })
+
+  const previsao_url = `http://servicos.cptec.inpe.br/XML/cidade/${codigo}/previsao.xml` //BEM AQUI
+  getFromUrl(previsao_url, function() {
     const response = this.responseXML.getElementsByTagName('previsao')
     let previsoes = []
     for (const dia of response){
