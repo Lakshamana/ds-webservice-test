@@ -5,6 +5,7 @@ function validateForm(evt) {
   // const city = document.getElementById("cidade").value;
   // const state = document.getElementById("estado").value;
   // console.log(city, state);
+
   getFromUrl(url, function() {
     const response = this.responseXML.getElementsByTagName('previsao')
     let previsoes = []
@@ -16,7 +17,36 @@ function validateForm(evt) {
       previsoes.push(previsao)
     }
     console.log(previsoes)
+    writeDataOnHtml(previsoes)
   })
+
+}
+
+function writeDataOnHtml(payload){
+
+  document.getElementById('data').innerHTML =
+  '<table border=1 cellpadding="5" id="table-data">'+
+  '<tr>'+
+  '<th>Day</th>'+
+  '<td>Tempo</td>'+
+  '<td>Maxima</td>'+
+  '<td>Minima</td>'+
+  '<td>IUV</td>'+
+  '</tr>'+
+  '</tr>'+
+  '</table>'
+
+  for (const data of payload){
+    console.log(data)
+    document.getElementById('table-data').innerHTML +=
+    '<tr>'+
+    '<td>'+data.dia+'</td>'+
+    '<td>'+data.tempo+'</td>'+
+    '<td>'+data.maxima+' ºC</td>'+
+    '<td>'+data.minima+' ºC</td>'+
+    '<td>'+data.iuv+'</td>'+
+    '</tr>'
+  }
 }
 
 function getFromUrl(url, cb) {
