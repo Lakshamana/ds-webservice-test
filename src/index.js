@@ -1,17 +1,21 @@
-function validateForm() {
-  console.log('passei')
-  // evt.preventDefault();
-  const url = 'https://jsonplaceholder.typicode.com/users'
+
+function validateForm(evt) {
+  evt.preventDefault();
+  const url = 'http://servicos.cptec.inpe.br/XML/cidade/244/previsao.xml'
   // const city = document.getElementById("cidade").value;
   // const state = document.getElementById("estado").value;
-  console.log('dslkfjsdlkfj')
   // console.log(city, state);
   getFromUrl(url, function() {
-    const response = JSON.parse(this.responseText)
-    for (const data of response) {
-      const payload = pick(data, ['username', 'email'])
-      console.log(payload)
+    const response = this.responseXML.getElementsByTagName('previsao')
+    let previsoes = []
+    for (const dia of response){
+      let previsao = {}
+      for (const node of dia.childNodes){
+        previsao[node.tagName] = node.innerHTML
+      }
+      previsoes.push(previsao)
     }
+    console.log(previsoes)
   })
 }
 
