@@ -12,7 +12,7 @@ function validateForm(evt) {
     for (const cidade of response){
       for (const node of cidade.childNodes){
         if (node.childNodes[1].innerHTML === state){
-          codigo = node.childNodes[2].innerHTML //PRECISO DISSO AQUI
+          codigo = node.childNodes[2].innerHTML
           document.getElementById('codigo').value = codigo
           break
         }
@@ -22,7 +22,7 @@ function validateForm(evt) {
 
   const codigo = document.getElementById('codigo').value
   console.log(codigo)
-  const previsao_url = `http://servicos.cptec.inpe.br/XML/cidade/${codigo}/previsao.xml` //BEM AQUI
+  const previsao_url = `http://servicos.cptec.inpe.br/XML/cidade/${codigo}/previsao.xml`
   getFromUrl(previsao_url, function() {
     const response = this.responseXML.getElementsByTagName('previsao')
     let previsoes = []
@@ -44,7 +44,7 @@ function writeDataOnHtml(payload){
   document.getElementById('data').innerHTML =
   '<table border=1 cellpadding="5" id="table-data">'+
   '<tr>'+
-  '<th>Day</th>'+
+  '<th>Dia</th>'+
   '<td>Tempo</td>'+
   '<td>Maxima</td>'+
   '<td>Minima</td>'+
@@ -64,6 +64,9 @@ function writeDataOnHtml(payload){
     '<td>'+data.iuv+'</td>'+
     '</tr>'
   }
+
+  document.getElementById('data').innerHTML +=
+  'Para legenda de siglas do tempo, clique <a href="http://servicos.cptec.inpe.br/XML/#condicoes-tempo">aqui</a>'
 }
 
 function getFromUrl(url, cb) {

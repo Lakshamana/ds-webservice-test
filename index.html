@@ -3,15 +3,19 @@
   <head>
     <title>Parcel Sandbox</title>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="src/styles.css">
     <script src="src/index.js"></script>
     <script src="src/scripts.js"></script>
   </head>
 
   <body>
-    <div id="app">
+    <div class="app">
       <form name="entrada" onsubmit="validateForm(event)">
-        Cidade (sem acento): <input type="text" name="cidade" id="cidade" /><br />
-        Estado (sigla): <input type="text" name="estado" id="estado" /><br /><br />
+        <label>Cidade (sem acento): </label>
+        <input type="text" name="cidade" id="cidade" /><br />
+        <label>Estado (sigla): </label>
+        <input type="text" name="estado" id="estado" />
+
         <input type="hidden" id="codigo"/>
 
         <input type="submit" value="Consultar" />
