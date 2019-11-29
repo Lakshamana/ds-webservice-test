@@ -13,13 +13,15 @@ function validateForm(evt) {
       for (const node of cidade.childNodes){
         if (node.childNodes[1].innerHTML === state){
           codigo = node.childNodes[2].innerHTML //PRECISO DISSO AQUI
+          document.getElementById('codigo').value = codigo
           break
         }
       }
     }
-    console.log(codigo)
   })
 
+  const codigo = document.getElementById('codigo').value
+  console.log(codigo)
   const previsao_url = `http://servicos.cptec.inpe.br/XML/cidade/${codigo}/previsao.xml` //BEM AQUI
   getFromUrl(previsao_url, function() {
     const response = this.responseXML.getElementsByTagName('previsao')
