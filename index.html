@@ -3,20 +3,25 @@
   <head>
     <title>Parcel Sandbox</title>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="src/styles.css">
     <script src="src/index.js"></script>
     <script src="src/scripts.js"></script>
   </head>
 
   <body>
-    <div id="app">
-      <form name="entrada" onsubmit="validateForm(event)W">
-        Cidade: <input type="text" name="cidade" id="cidade" /><br />
-        Estado: <input type="text" name="estado" id="estado" /><br /><br />
+    <div class="app">
+      <form name="entrada" onsubmit="validateForm(event)">
+        <label>Cidade (sem acento): </label>
+        <input type="text" name="cidade" id="cidade" /><br />
+        <label>Estado (sigla): </label>
+        <input type="text" name="estado" id="estado" />
+
+        <input type="hidden" id="codigo"/>
 
         <input type="submit" value="Consultar" />
       </form>
       <!-- aqui vai a table dentro do data -->
-      <div id="data"></div>
+      <div id="data" style="margin:50px"></div>
     </div>
   </body>
 </html>

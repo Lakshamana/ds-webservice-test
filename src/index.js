@@ -1,18 +1,72 @@
-function validateForm() {
-  console.log('passei')
-  // evt.preventDefault();
-  const url = 'https://jsonplaceholder.typicode.com/users'
-  // const city = document.getElementById("cidade").value;
-  // const state = document.getElementById("estado").value;
-  console.log('dslkfjsdlkfj')
-  // console.log(city, state);
-  getFromUrl(url, function() {
-    const response = JSON.parse(this.responseText)
-    for (const data of response) {
-      const payload = pick(data, ['username', 'email'])
-      console.log(payload)
+
+function validateForm(evt) {
+  evt.preventDefault();
+  const city = document.getElementById("cidade").value.toLowerCase().replace(' ', '%20');
+  const state = document.getElementById("estado").value.toUpperCase();
+  console.log(city, state);
+
+  const codigo_url = `http://servicos.cptec.inpe.br/XML/listaCidades?city=${city}`
+  getFromUrl(codigo_url, function() {
+    const response = this.responseXML.getElementsByTagName('cidades')
+    let codigo = null
+    for (const cidade of response){
+      for (const node of cidade.childNodes){
+        if (node.childNodes[1].innerHTML === state){
+          codigo = node.childNodes[2].innerHTML
+          document.getElementById('codigo').value = codigo
+          break
+        }
+      }
     }
   })
+
+  const codigo = document.getElementById('codigo').value
+  console.log(codigo)
+  const previsao_url = `http://servicos.cptec.inpe.br/XML/cidade/${codigo}/previsao.xml`
+  getFromUrl(previsao_url, function() {
+    const response = this.responseXML.getElementsByTagName('previsao')
+    let previsoes = []
+    for (const dia of response){
+      let previsao = {}
+      for (const node of dia.childNodes){
+        previsao[node.tagName] = node.innerHTML
+      }
+      previsoes.push(previsao)
+    }
+    console.log(previsoes)
+    writeDataOnHtml(previsoes)
+  })
+
+}
+
+function writeDataOnHtml(payload){
+
+  document.getElementById('data').innerHTML =
+  '<table border=1 cellpadding="5" id="table-data">'+
+  '<tr>'+
+  '<th>Dia</th>'+
+  '<td>Tempo</td>'+
+  '<td>Maxima</td>'+
+  '<td>Minima</td>'+
+  '<td>IUV</td>'+
+  '</tr>'+
+  '</tr>'+
+  '</table>'
+
+  for (const data of payload){
+    console.log(data)
+    document.getElementById('table-data').innerHTML +=
+    '<tr>'+
+    '<td>'+data.dia+'</td>'+
+    '<td>'+data.tempo+'</td>'+
+    '<td>'+data.maxima+' ºC</td>'+
+    '<td>'+data.minima+' ºC</td>'+
+    '<td>'+data.iuv+'</td>'+
+    '</tr>'
+  }
+
+  document.getElementById('data').innerHTML +=
+  'Para legenda de siglas do tempo, clique <a href="http://servicos.cptec.inpe.br/XML/#condicoes-tempo">aqui</a>'
 }
 
 function getFromUrl(url, cb) {
